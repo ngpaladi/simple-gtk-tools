@@ -185,50 +185,93 @@ jobs:
           name: sgt-debian-bullseye-deb
           path: simple-gtk-tools_1.0_amd64.deb
 
-  build-debian-buster:
-    if: github.event_name == 'release'
-    runs-on: ubuntu-latest
-    container:
-      image: debian:buster
-    steps:
-      - uses: actions/checkout@v4
-      - name: Install dependencies
-        run: apt-get update && apt-get install -y build-essential pkg-config libgtkmm-3.0-dev dpkg-dev
-      - name: Build binary
-        run: make build
-      - name: Build deb package
-        run: make deb
-      - name: Upload binary
-        uses: actions/upload-artifact@v4
-        with:
-          name: sgt-debian-buster-bin
-          path: bin/sgt
-      - name: Upload deb package
-        uses: actions/upload-artifact@v4
-        with:
-          name: sgt-debian-buster-deb
-          path: simple-gtk-tools_1.0_amd64.deb
 
-  build-debian-stretch:
+  upload-release-assets:
     if: github.event_name == 'release'
     runs-on: ubuntu-latest
-    container:
-      image: debian:stretch
+    needs:
+      - build-ubuntu-24_04
+      - build-ubuntu-22_04
+      - build-alma-9
+      - build-alma-8
+      - build-centos-7
+      - build-debian-bookworm
+      - build-debian-bullseye
     steps:
-      - uses: actions/checkout@v4
-      - name: Install dependencies
-        run: apt-get update && apt-get install -y build-essential pkg-config libgtkmm-3.0-dev dpkg-dev
-      - name: Build binary
-        run: make build
-      - name: Build deb package
-        run: make deb
-      - name: Upload binary
-        uses: actions/upload-artifact@v4
+      - name: Download all workflow artifacts
+        uses: actions/download-artifact@v4
         with:
-          name: sgt-debian-stretch-bin
-          path: bin/sgt
-      - name: Upload deb package
-        uses: actions/upload-artifact@v4
+          path: artifacts
+
+      - name: List downloaded files
+        run: find artifacts
+
+      - name: Upload Ubuntu 24.04 deb to release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: sgt-debian-stretch-deb
-          path: simple-gtk-tools_1.0_amd64.deb
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: artifacts/sgt-ubuntu-24.04-deb/simple-gtk-tools_1.0_amd64.deb
+          asset_name: simple-gtk-tools_ubuntu-24.04_1.0_amd64.deb
+          asset_content_type: application/vnd.debian.binary-package
+
+      - name: Upload Ubuntu 22.04 deb to release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: artifacts/sgt-ubuntu-22.04-deb/simple-gtk-tools_1.0_amd64.deb
+          asset_name: simple-gtk-tools_ubuntu-22.04_1.0_amd64.deb
+          asset_content_type: application/vnd.debian.binary-package
+
+      - name: Upload AlmaLinux 9 rpm to release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: artifacts/sgt-alma-9-rpm/*.rpm
+          asset_name: simple-gtk-tools_almalinux-9_1.0_x86_64.rpm
+          asset_content_type: application/x-rpm
+
+      - name: Upload AlmaLinux 8 rpm to release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: artifacts/sgt-alma-8-rpm/*.rpm
+          asset_name: simple-gtk-tools_almalinux-8_1.0_x86_64.rpm
+          asset_content_type: application/x-rpm
+
+      - name: Upload CentOS 7 rpm to release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: artifacts/sgt-centos-7-rpm/*.rpm
+          asset_name: simple-gtk-tools_centos-7_1.0_x86_64.rpm
+          asset_content_type: application/x-rpm
+
+      - name: Upload Debian Bookworm deb to release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: artifacts/sgt-debian-bookworm-deb/simple-gtk-tools_1.0_amd64.deb
+          asset_name: simple-gtk-tools_debian-bookworm_1.0_amd64.deb
+          asset_content_type: application/vnd.debian.binary-package
+
+      - name: Upload Debian Bullseye deb to release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: artifacts/sgt-debian-bullseye-deb/simple-gtk-tools_1.0_amd64.deb
+          asset_name: simple-gtk-tools_debian-bullseye_1.0_amd64.deb
+          asset_content_type: application/vnd.debian.binary-package
