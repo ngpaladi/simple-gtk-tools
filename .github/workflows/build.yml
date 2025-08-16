@@ -63,7 +63,7 @@ jobs:
       - name: Build in AlmaLinux 9 container
         run: |
           docker run --rm -v $PWD:/workspace -w /workspace almalinux:9 \
-          bash -c "dnf install -y epel-release && dnf config-manager --set-enabled crb && dnf install -y make gcc-c++ pkgconf-pkg-config gtkmm3-devel rubygems && gem install fpm && make build && make rpm"
+          bash -c "dnf install -y epel-release dnf-plugins-core && crb enable && dnf install -y make gcc-c++ pkgconf-pkg-config gtkmm3-devel rubygems && gem install fpm && make build && make rpm"
       - name: Upload binary
         uses: actions/upload-artifact@v4
         with:
@@ -83,7 +83,7 @@ jobs:
       - name: Build in AlmaLinux 8 container
         run: |
           docker run --rm -v $PWD:/workspace -w /workspace almalinux:8 \
-          bash -c "dnf install -y epel-release && dnf config-manager --set-enabled powertools && dnf install -y make gcc-c++ pkgconf-pkg-config gtkmm3-devel rubygems && gem install fpm && make build && make rpm"
+          bash -c "dnf install -y epel-release dnf-plugins-core && dnf config-manager --set-enabled powertools && dnf install -y make gcc-c++ pkgconf-pkg-config gtkmm3-devel rubygems && gem install fpm && make build && make rpm"
       - name: Upload binary
         uses: actions/upload-artifact@v4
         with:
