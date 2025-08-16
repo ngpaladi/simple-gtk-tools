@@ -75,26 +75,6 @@ jobs:
           name: sgt-alma-9-rpm
           path: "*.rpm"
 
-  build-alma-8:
-    if: github.event_name == 'release'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Build in AlmaLinux 8 container
-        run: |
-          docker run --rm -v $PWD:/workspace -w /workspace almalinux:8 \
-          bash -c "dnf install -y epel-release dnf-plugins-core && dnf config-manager --set-enabled powertools && dnf install -y make gcc-c++ pkgconf-pkg-config gtkmm30-devel rubygems rpm-build && gem install fpm && make build && make rpm"
-      - name: Upload binary
-        uses: actions/upload-artifact@v4
-        with:
-          name: sgt-alma-8-bin
-          path: bin/sgt
-      - name: Upload rpm package
-        uses: actions/upload-artifact@v4
-        with:
-          name: sgt-alma-8-rpm
-          path: "*.rpm"
-
   build-debian-bookworm:
     if: github.event_name == 'release'
     runs-on: ubuntu-latest
@@ -151,7 +131,6 @@ jobs:
       - build-ubuntu-24_04
       - build-ubuntu-22_04
       - build-alma-9
-      - build-alma-8
       - build-debian-bookworm
       - build-debian-bullseye
     steps:
