@@ -33,10 +33,10 @@ jobs:
           path: simple-gtk-tools_1.0_amd64.deb
 
   build-ubuntu-22_04:
+    if: github.event_name == 'release'
     runs-on: ubuntu-latest
     container:
       image: ubuntu:22.04
-    if: github.event_name == 'release'
     steps:
       - uses: actions/checkout@v4
       - name: Install dependencies
@@ -57,10 +57,10 @@ jobs:
           path: simple-gtk-tools_1.0_amd64.deb
 
   build-alma-9:
+    if: github.event_name == 'release'
     runs-on: ubuntu-latest
     container:
       image: almalinux:9
-    if: github.event_name == 'release'
     steps:
       - uses: actions/checkout@v4
       - name: Install dependencies
@@ -84,10 +84,10 @@ jobs:
           path: *.rpm
 
   build-alma-8:
+    if: github.event_name == 'release'
     runs-on: ubuntu-latest
     container:
       image: almalinux:8
-    if: github.event_name == 'release'
     steps:
       - uses: actions/checkout@v4
       - name: Install dependencies
@@ -111,10 +111,10 @@ jobs:
           path: *.rpm
 
   build-centos-7:
+    if: github.event_name == 'release'
     runs-on: ubuntu-latest
     container:
       image: centos:7
-    if: github.event_name == 'release'
     steps:
       - uses: actions/checkout@v4
       - name: Install dependencies
@@ -138,10 +138,10 @@ jobs:
           path: *.rpm
 
   build-debian-bookworm:
+    if: github.event_name == 'release'
     runs-on: ubuntu-latest
     container:
       image: debian:bookworm
-    if: github.event_name == 'release'
     steps:
       - uses: actions/checkout@v4
       - name: Install dependencies
@@ -162,10 +162,10 @@ jobs:
           path: simple-gtk-tools_1.0_amd64.deb
 
   build-debian-bullseye:
+    if: github.event_name == 'release'
     runs-on: ubuntu-latest
     container:
       image: debian:bullseye
-    if: github.event_name == 'release'
     steps:
       - uses: actions/checkout@v4
       - name: Install dependencies
@@ -186,10 +186,10 @@ jobs:
           path: simple-gtk-tools_1.0_amd64.deb
 
   build-debian-buster:
+    if: github.event_name == 'release'
     runs-on: ubuntu-latest
     container:
       image: debian:buster
-    if: github.event_name == 'release'
     steps:
       - uses: actions/checkout@v4
       - name: Install dependencies
@@ -210,10 +210,10 @@ jobs:
           path: simple-gtk-tools_1.0_amd64.deb
 
   build-debian-stretch:
+    if: github.event_name == 'release'
     runs-on: ubuntu-latest
     container:
       image: debian:stretch
-    if: github.event_name == 'release'
     steps:
       - uses: actions/checkout@v4
       - name: Install dependencies
