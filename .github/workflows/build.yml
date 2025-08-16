@@ -59,19 +59,12 @@ jobs:
   build-alma-9:
     if: github.event_name == 'release'
     runs-on: ubuntu-latest
-    container:
-      image: almalinux:9
     steps:
       - uses: actions/checkout@v4
-      - name: Install dependencies
+      - name: Build in AlmaLinux 9 container
         run: |
-          dnf install -y epel-release
-          dnf install -y make gcc-c++ pkgconf-pkg-config gtkmm3-devel rubygems
-          gem install fpm
-      - name: Build binary
-        run: make build
-      - name: Build rpm package
-        run: make rpm
+          docker run --rm -v $PWD:/workspace -w /workspace almalinux:9 \
+          bash -c "dnf install -y epel-release && dnf config-manager --set-enabled crb && dnf install -y make gcc-c++ pkgconf-pkg-config gtkmm3-devel rubygems && gem install fpm && make build && make rpm"
       - name: Upload binary
         uses: actions/upload-artifact@v4
         with:
@@ -86,19 +79,12 @@ jobs:
   build-alma-8:
     if: github.event_name == 'release'
     runs-on: ubuntu-latest
-    container:
-      image: almalinux:8
     steps:
       - uses: actions/checkout@v4
-      - name: Install dependencies
+      - name: Build in AlmaLinux 8 container
         run: |
-          dnf install -y epel-release
-          dnf install -y make gcc-c++ pkgconf-pkg-config gtkmm3-devel rubygems
-          gem install fpm
-      - name: Build binary
-        run: make build
-      - name: Build rpm package
-        run: make rpm
+          docker run --rm -v $PWD:/workspace -w /workspace almalinux:8 \
+          bash -c "dnf install -y epel-release && dnf config-manager --set-enabled crb && dnf install -y make gcc-c++ pkgconf-pkg-config gtkmm3-devel rubygems && gem install fpm && make build && make rpm"
       - name: Upload binary
         uses: actions/upload-artifact@v4
         with:
@@ -113,19 +99,12 @@ jobs:
   build-centos-7:
     if: github.event_name == 'release'
     runs-on: ubuntu-latest
-    container:
-      image: centos:7
     steps:
       - uses: actions/checkout@v4
-      - name: Install dependencies
+      - name: Build in CentOS 7 container
         run: |
-          yum install -y epel-release
-          yum install -y make gcc-c++ pkgconfig gtkmm3-devel rubygems
-          gem install fpm
-      - name: Build binary
-        run: make build
-      - name: Build rpm package
-        run: make rpm
+          docker run --rm -v $PWD:/workspace -w /workspace centos:7 \
+          bash -c "yum install -y epel-release && yum install -y make gcc-c++ pkgconfig gtkmm3-devel rubygems && gem install fpm && make build && make rpm"
       - name: Upload binary
         uses: actions/upload-artifact@v4
         with:
