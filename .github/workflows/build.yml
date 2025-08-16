@@ -66,7 +66,7 @@ jobs:
       - name: Install dependencies
         run: |
           dnf install -y epel-release
-          dnf install -y make gcc-c++ pkgconf-pkg-config gtkmm30-devel rubygems
+          dnf install -y make gcc-c++ pkgconf-pkg-config gtkmm3-devel rubygems
           gem install fpm
       - name: Build binary
         run: make build
@@ -93,7 +93,7 @@ jobs:
       - name: Install dependencies
         run: |
           dnf install -y epel-release
-          dnf install -y make gcc-c++ pkgconf-pkg-config gtkmm30-devel rubygems
+          dnf install -y make gcc-c++ pkgconf-pkg-config gtkmm3-devel rubygems
           gem install fpm
       - name: Build binary
         run: make build
@@ -120,7 +120,7 @@ jobs:
       - name: Install dependencies
         run: |
           yum install -y epel-release
-          yum install -y make gcc-c++ pkgconfig gtkmm30-devel rubygems
+          yum install -y make gcc-c++ pkgconfig gtkmm3-devel rubygems
           gem install fpm
       - name: Build binary
         run: make build
