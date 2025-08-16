@@ -1,0 +1,234 @@
+name: Build Packages for AlmaLinux (RHEL), CentOS, Debian, and Ubuntu
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  release:
+    types: [published]
+
+jobs:
+  build-ubuntu-24_04:
+    runs-on: ubuntu-latest
+    container:
+      image: ubuntu:24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: apt-get update && apt-get install -y build-essential pkg-config libgtkmm-3.0-dev dpkg-dev
+      - name: Build binary
+        run: make build
+      - name: Build deb package
+        run: make deb
+      - name: Upload binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: sgt-ubuntu-24.04-bin
+          path: bin/sgt
+      - name: Upload deb package
+        uses: actions/upload-artifact@v4
+        with:
+          name: sgt-ubuntu-24.04-deb
+          path: simple-gtk-tools_1.0_amd64.deb
+
+  build-ubuntu-22_04:
+    runs-on: ubuntu-latest
+    container:
+      image: ubuntu:22.04
+    if: github.event_name == 'release'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: apt-get update && apt-get install -y build-essential pkg-config libgtkmm-3.0-dev dpkg-dev
+      - name: Build binary
+        run: make build
+      - name: Build deb package
+        run: make deb
+      - name: Upload binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: sgt-ubuntu-22.04-bin
+          path: bin/sgt
+      - name: Upload deb package
+        uses: actions/upload-artifact@v4
+        with:
+          name: sgt-ubuntu-22.04-deb
+          path: simple-gtk-tools_1.0_amd64.deb
+
+  build-alma-9:
+    runs-on: ubuntu-latest
+    container:
+      image: almalinux:9
+    if: github.event_name == 'release'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: |
+          dnf install -y epel-release
+          dnf install -y make gcc-c++ pkgconf-pkg-config gtkmm30-devel rubygems
+          gem install fpm
+      - name: Build binary
+        run: make build
+      - name: Build rpm package
+        run: make rpm
+      - name: Upload binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: sgt-alma-9-bin
+          path: bin/sgt
+      - name: Upload rpm package
+        uses: actions/upload-artifact@v4
+        with:
+          name: sgt-alma-9-rpm
+          path: *.rpm
+
+  build-alma-8:
+    runs-on: ubuntu-latest
+    container:
+      image: almalinux:8
+    if: github.event_name == 'release'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: |
+          dnf install -y epel-release
+          dnf install -y make gcc-c++ pkgconf-pkg-config gtkmm30-devel rubygems
+          gem install fpm
+      - name: Build binary
+        run: make build
+      - name: Build rpm package
+        run: make rpm
+      - name: Upload binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: sgt-alma-8-bin
+          path: bin/sgt
+      - name: Upload rpm package
+        uses: actions/upload-artifact@v4
+        with:
+          name: sgt-alma-8-rpm
+          path: *.rpm
+
+  build-centos-7:
+    runs-on: ubuntu-latest
+    container:
+      image: centos:7
+    if: github.event_name == 'release'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: |
+          yum install -y epel-release
+          yum install -y make gcc-c++ pkgconfig gtkmm30-devel rubygems
+          gem install fpm
+      - name: Build binary
+        run: make build
+      - name: Build rpm package
+        run: make rpm
+      - name: Upload binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: sgt-centos-7-bin
+          path: bin/sgt
+      - name: Upload rpm package
+        uses: actions/upload-artifact@v4
+        with:
+          name: sgt-centos-7-rpm
+          path: *.rpm
+
+  build-debian-bookworm:
+    runs-on: ubuntu-latest
+    container:
+      image: debian:bookworm
+    if: github.event_name == 'release'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: apt-get update && apt-get install -y build-essential pkg-config libgtkmm-3.0-dev dpkg-dev
+      - name: Build binary
+        run: make build
+      - name: Build deb package
+        run: make deb
+      - name: Upload binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: sgt-debian-bookworm-bin
+          path: bin/sgt
+      - name: Upload deb package
+        uses: actions/upload-artifact@v4
+        with:
+          name: sgt-debian-bookworm-deb
+          path: simple-gtk-tools_1.0_amd64.deb
+
+  build-debian-bullseye:
+    runs-on: ubuntu-latest
+    container:
+      image: debian:bullseye
+    if: github.event_name == 'release'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: apt-get update && apt-get install -y build-essential pkg-config libgtkmm-3.0-dev dpkg-dev
+      - name: Build binary
+        run: make build
+      - name: Build deb package
+        run: make deb
+      - name: Upload binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: sgt-debian-bullseye-bin
+          path: bin/sgt
+      - name: Upload deb package
+        uses: actions/upload-artifact@v4
+        with:
+          name: sgt-debian-bullseye-deb
+          path: simple-gtk-tools_1.0_amd64.deb
+
+  build-debian-buster:
+    runs-on: ubuntu-latest
+    container:
+      image: debian:buster
+    if: github.event_name == 'release'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: apt-get update && apt-get install -y build-essential pkg-config libgtkmm-3.0-dev dpkg-dev
+      - name: Build binary
+        run: make build
+      - name: Build deb package
+        run: make deb
+      - name: Upload binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: sgt-debian-buster-bin
+          path: bin/sgt
+      - name: Upload deb package
+        uses: actions/upload-artifact@v4
+        with:
+          name: sgt-debian-buster-deb
+          path: simple-gtk-tools_1.0_amd64.deb
+
+  build-debian-stretch:
+    runs-on: ubuntu-latest
+    container:
+      image: debian:stretch
+    if: github.event_name == 'release'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: apt-get update && apt-get install -y build-essential pkg-config libgtkmm-3.0-dev dpkg-dev
+      - name: Build binary
+        run: make build
+      - name: Build deb package
+        run: make deb
+      - name: Upload binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: sgt-debian-stretch-bin
+          path: bin/sgt
+      - name: Upload deb package
+        uses: actions/upload-artifact@v4
+        with:
+          name: sgt-debian-stretch-deb
+          path: simple-gtk-tools_1.0_amd64.deb
