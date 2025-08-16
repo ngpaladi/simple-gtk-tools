@@ -81,7 +81,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: sgt-alma-9-rpm
-          path: *.rpm
+          path: "*.rpm"
 
   build-alma-8:
     if: github.event_name == 'release'
@@ -108,7 +108,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: sgt-alma-8-rpm
-          path: *.rpm
+          path: "*.rpm"
 
   build-centos-7:
     if: github.event_name == 'release'
@@ -135,7 +135,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: sgt-centos-7-rpm
-          path: *.rpm
+          path: "*.rpm"
 
   build-debian-bookworm:
     if: github.event_name == 'release'
